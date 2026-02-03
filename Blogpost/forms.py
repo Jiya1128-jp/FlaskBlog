@@ -16,10 +16,11 @@ class Registrationform(FlaskForm):
         if user:
             raise ValidationError('The Username is taken. Please Choose a different one!')
     
-    def validate_email(self,email):
-        user = User.query.filter_by(email = email.data).first()
-        if user:
-            raise ValidationError('The Email already Exist. Please Choose a different one!')
+def validate_email(self, email):
+    user = User.query.filter_by(email=email.data).first()
+
+    if user:
+        raise ValidationError('The Email already Exist. Please Choose a different one!')
 
 
 
@@ -51,3 +52,18 @@ class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(),Email()])
+    submit = SubmitField('Request Reset Password')
+    def validate_email(self,email):
+            user = User.query.filter_by(email = email.data).first()
+            if user is None:
+                raise ValidationError("The Email doesn't Exist. You must Register first.")
+            
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(),EqualTo('password')])
+    submit = SubmitField('Reset Password')
