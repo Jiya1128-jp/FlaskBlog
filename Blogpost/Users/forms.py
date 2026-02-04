@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
-from wtforms import StringField , PasswordField , SubmitField , BooleanField , TextAreaField
-from wtforms.validators import DataRequired , Length , Email , EqualTo, ValidationError
 from Blogpost.models import User
 
 class Registrationform(FlaskForm):
@@ -16,11 +16,11 @@ class Registrationform(FlaskForm):
         if user:
             raise ValidationError('The Username is taken. Please Choose a different one!')
     
-def validate_email(self, email):
-    user = User.query.filter_by(email=email.data).first()
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
 
-    if user:
-        raise ValidationError('The Email already Exist. Please Choose a different one!')
+        if user:
+            raise ValidationError('The Email already Exist. Please Choose a different one!')
 
 
 
@@ -47,13 +47,6 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('The Email already Exist. Please Choose a different one!')
             
-
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post')
-
-
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
     submit = SubmitField('Request Reset Password')
