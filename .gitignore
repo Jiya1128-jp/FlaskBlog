@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+blogenv/
+
+# Environment Variables
+.env
+
+# Flask Instance
+instance/
+
+# Database
+*.db
+*.sqlite3
